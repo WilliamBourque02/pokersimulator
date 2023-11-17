@@ -266,7 +266,7 @@ var BlackjackJS = (function() {
 			
 			playerHand = this.player.gethand()
 			dealerHand = this.dealer.gethand()
-			
+			// pour les pairs
 			for(var i = 0; i < Object.keys(playerHand).length; i++ )
 			{
 				 for(var t = 0; t < Object.keys(dealerHand).length; t++) 
@@ -287,6 +287,8 @@ var BlackjackJS = (function() {
 					 }
 				 }
 			}
+			// les triplés
+			importScripts("/pokersolver-master/pokersolver.js")
 			console.log(pairDansLaMainDuDealer + "pair dans la main du dealer")
 			console.log(pairEntreMainJoueurEtDealer + "pair entre la main du joueur et le dealer")
 			this.gameEnded('terminer');
@@ -368,7 +370,7 @@ var BlackjackJS = (function() {
 			Deck.shuffle();
 
 			//deal one card to dealer
-			this.dealer = new Dealer('dealer', [Deck.deck.pop()]);
+			this.dealer = new Dealer('dealer', [Deck.deck.pop()],[Deck.deck.pop()],[Deck.deck.pop()]);
 
 			//deal two cards to player
 			this.player = new Player('player', [Deck.deck.pop(), Deck.deck.pop()]);
