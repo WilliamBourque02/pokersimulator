@@ -9,7 +9,7 @@ import * as name from "/pokersolver-master/pokersolver.js";
 */
 
 //namespacing
-var BlackjackJS = (function() {
+export var BlackjackJS = (function() {
 
 	var hand1 = Hand.solve(['Ad', 'As', 'Jc', 'Th', '2d', '3c', 'Kd']);
     var hand2 = Hand.solve(['Ad', 'As', 'Jc', 'Th', '2d', 'Qs', 'Qd']);
