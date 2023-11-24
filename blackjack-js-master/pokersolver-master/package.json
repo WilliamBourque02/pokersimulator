@@ -2,6 +2,7 @@
   "name": "pokersolver",
   "description": "Javascript poker hand solver.",
   "homepage": "https://github.com/goldfire/pokersolver",
+  "type": "module",
   "keywords": [
     "poker",
     "poker-hand",

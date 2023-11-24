@@ -33,17 +33,8 @@
 
     </div>
 
-    <script type="text/javascript" src="blackjack.js"></script>
-    <script type="text/javascript">
-      //initialise the game
+    <script type="module" src="blackjack.js">
       BlackjackJS.init();
-    </script>
-    <script src="pokersolver-master/pokersolver.js"></script>
-    <script>
-      var hand1 = Hand.solve(['Ad', 'As', 'Jc', 'Th', '2d', '3c', 'Kd']);
-      var hand2 = Hand.solve(['Ad', 'As', 'Jc', 'Th', '2d', 'Qs', 'Qd']);
-      var winner = Hand.winners([hand1, hand2]); // hand2
-      console.log(hand2.descr)
     </script>
   </body>
 </html>
