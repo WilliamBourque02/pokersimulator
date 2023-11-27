@@ -1,4 +1,3 @@
-import * as name from "/pokersolver-master/pokersolver.js";
 /*
 	Blackjack 21
 	A simple game developed using Javascript, HTML and CSS
@@ -9,7 +8,7 @@ import * as name from "/pokersolver-master/pokersolver.js";
 */
 
 //namespacing
-export var BlackjackJS = (function() {
+var BlackjackJS = (function() {
 
 	var hand1 = Hand.solve(['Ad', 'As', 'Jc', 'Th', '2d', '3c', 'Kd']);
     var hand2 = Hand.solve(['Ad', 'As', 'Jc', 'Th', '2d', 'Qs', 'Qd']);
@@ -292,7 +291,6 @@ export var BlackjackJS = (function() {
 					 }
 				 }
 			}
-			// les triplés
 			console.log(pairDansLaMainDuDealer + "pair dans la main du dealer")
 			console.log(pairEntreMainJoueurEtDealer + "pair entre la main du joueur et le dealer")
 			this.gameEnded('terminer');
@@ -417,4 +415,5 @@ export var BlackjackJS = (function() {
 		init: Game.init.bind(Game)
 	}
 
-})() 
+})()
+
