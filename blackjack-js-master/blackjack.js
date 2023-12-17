@@ -10,10 +10,13 @@
 //namespacing
 var BlackjackJS = (function() {
 
-	var hand1 = Hand.solve(['Ad', 'As', 'Jc', 'Th', '2d', '3c', 'Kd']);
-    var hand2 = Hand.solve(['Ad', 'As', 'Jc', 'Th', '2d', 'Qs', 'Qd']);
-    var winner = Hand.winners([hand1, hand2]); // hand2
-    console.log(hand2.descr)
+		var hand1 = Hand.solve(['Ad', 'As']);
+		var hand3 = Hand.solve(['2d', 'Tc']);
+		var winner = Hand.winners([hand1,hand3]);
+		winner = winner.toString();
+		hand1 = hand1.toString();
+		console.log(winner);
+		console.log(hand1);
 	/**************
 		Card class
 	***************/
@@ -204,7 +207,7 @@ var BlackjackJS = (function() {
 		this.ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 		this.suits = ['hearts', 'spades', 'diamonds','clubs'];
 	  this.deck;
-
+		
 		/*
 			Fills up the deck array with cards
 		*/
@@ -254,11 +257,6 @@ var BlackjackJS = (function() {
 			Hit button event handler
 		*/
 		this.hitButtonHandler = function(){
-			//conteur
-			var pairEntreMainJoueurEtDealer;
-			var pairDansLaMainDuDealer;
-			pairDansLaMainDuDealer =0;
-			pairEntreMainJoueurEtDealer =0;
 			//deal a card and add to Dealer's hand
 			if(this.dealer.getHandLength() < 5){
 			var card = Deck.deck.pop();
@@ -266,34 +264,138 @@ var BlackjackJS = (function() {
 			//render the card
 			document.getElementById(this.dealer.element).innerHTML += card.view();
 			}
+
 			if(this.dealer.getHandLength() == 5){
 			
 			playerHand = this.player.gethand()
 			dealerHand = this.dealer.gethand()
-			// pour les pairs
+			botHand = this.bot.gethand()
+			var mainJoueur = Array();
+			var win
+
 			for(var i = 0; i < Object.keys(playerHand).length; i++ )
 			{
-				 for(var t = 0; t < Object.keys(dealerHand).length; t++) 
-				 {
-					 if(playerHand[i].Rank == dealerHand[t].Rank)
-					 {
-						pairEntreMainJoueurEtDealer +=1;
-					 }
-				 }
+				if (playerHand[i].Rank ==12 )
+				{
+					mainJoueur.push("Q" + playerHand[i].suit.charAt(0));
+				}
+				if (playerHand[i].Rank ==11 )
+				{
+					mainJoueur.push("J" + playerHand[i].suit.charAt(0));
+				}
+				if (playerHand[i].Rank ==13 )
+				{
+					mainJoueur.push("K" + playerHand[i].suit.charAt(0));
+				}
+				if (playerHand[i].Rank == 14 )
+				{
+					mainJoueur.push("A" + playerHand[i].suit.charAt(0));
+				}
+				if (playerHand[i].Rank ==10 )
+				{
+					mainJoueur.push("T" + playerHand[i].suit.charAt(0));
+				}
+				if (playerHand[i].Rank ==9 )
+				{
+					mainJoueur.push(playerHand[i].Rank + playerHand[i].suit.charAt(0));
+				}
+				if (playerHand[i].Rank ==8 )
+				{
+					mainJoueur.push(playerHand[i].Rank + playerHand[i].suit.charAt(0));
+				}
+				if (playerHand[i].Rank ==7 )
+				{
+					mainJoueur.push(playerHand[i].Rank + playerHand[i].suit.charAt(0));
+				}
+				if (playerHand[i].Rank ==6 )
+				{
+					mainJoueur.push(playerHand[i].Rank + playerHand[i].suit.charAt(0));
+				}
+				if (playerHand[i].Rank ==5 )
+				{
+					mainJoueur.push(playerHand[i].Rank + playerHand[i].suit.charAt(0));
+				}
+				if (playerHand[i].Rank ==4 )
+				{
+					mainJoueur.push(playerHand[i].Rank + playerHand[i].suit.charAt(0));
+				}
+				if (playerHand[i].Rank ==3 )
+				{
+					mainJoueur.push(playerHand[i].Rank + playerHand[i].suit.charAt(0));
+				}
+				if (playerHand[i].Rank ==2 )
+				{
+					mainJoueur.push(playerHand[i].Rank + playerHand[i].suit.charAt(0));
+				}
 			}
-			for(var i = 0; i < Object.keys(dealerHand).length; i++ )
+			var mainBotvalider = Array();
+			for(var i = 0; i < Object.keys(botHand).length; i++ )
 			{
-				 for(var t = 0; t < Object.keys(dealerHand).length; t++) 
-				 {
-					 if(dealerHand[i].Rank == dealerHand[t].Rank && i!=t )
-					 {
-						pairDansLaMainDuDealer += 0.5;
-					 }
-				 }
+				if (botHand[i].Rank ==12 )
+				{
+					mainBotvalider.push("Q" + botHand[i].suit.charAt(0));
+				}
+				if (botHand[i].Rank ==11 )
+				{
+					mainBotvalider.push("J" + botHand[i].suit.charAt(0));
+				}
+				if (botHand[i].Rank ==13 )
+				{
+					mainBotvalider.push("K" + botHand[i].suit.charAt(0));
+				}
+				if (botHand[i].Rank == 14 )
+				{
+					mainBotvalider.push("A" + botHand[i].suit.charAt(0));
+				}
+				if (botHand[i].Rank ==10 )
+				{
+					mainBotvalider.push("T" + botHand[i].suit.charAt(0));
+				}
+				if (botHand[i].Rank ==9 )
+				{
+					mainBotvalider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
+				}
+				if (botHand[i].Rank ==8 )
+				{
+					mainBotvalider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
+				}
+				if (botHand[i].Rank ==7 )
+				{
+					mainBotvalider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
+				}
+				if (botHand[i].Rank ==6 )
+				{
+					mainBotvalider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
+				}
+				if (botHand[i].Rank ==5 )
+				{
+					mainBotvalider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
+				}
+				if (botHand[i].Rank ==4 )
+				{
+					mainBotvalider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
+				}
+				if (botHand[i].Rank ==3 )
+				{
+					mainBotvalider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
+				}
+				if (botHand[i].Rank ==2 )
+				{
+					mainBotvalider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
+				}
 			}
-			console.log(pairDansLaMainDuDealer + "pair dans la main du dealer")
-			console.log(pairEntreMainJoueurEtDealer + "pair entre la main du joueur et le dealer")
-			this.gameEnded('terminer');
+			var MJ = Hand.solve(mainJoueur)
+			var MB = Hand.solve(mainBotvalider)
+			var winner = Hand.winners([MJ,MB])
+			if (winner.toString() == MJ.toString())
+			{
+				this.gameEnded("victoire")
+				win += 1 
+			}
+			else
+			{
+				this.gameEnded('défaite');
+			}
 		}
 	}
 		/*
@@ -376,6 +478,8 @@ var BlackjackJS = (function() {
 
 			//deal two cards to player
 			this.player = new Player('player', [Deck.deck.pop(), Deck.deck.pop()]);
+			//donne les carte au bot
+			this.bot = new Player("bot",[Deck.deck.pop(), Deck.deck.pop()]);
 
 			//render the cards
 			document.getElementById(this.dealer.element).innerHTML = this.dealer.showHand();
