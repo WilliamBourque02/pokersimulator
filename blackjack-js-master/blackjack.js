@@ -182,7 +182,7 @@ var BlackjackJS = (function() {
 	Dealer.prototype.gethand = function(){
 		dictionary = {};
 		for(var i = 0; i< this.hand.length; i++){
-			dictionary[i]= {Rank: this.hand[i].getValue(i), suit: this.hand[i].getSuit(i) }
+			dictionary[2+i]= {Rank: this.hand[i].getValue(i), suit: this.hand[i].getSuit(i) }
 		}
 		return dictionary ;
 	}
@@ -233,6 +233,13 @@ var BlackjackJS = (function() {
 			 }
 		}
 
+		this.ajouter = function(hand){
+			for(i = 0; i < hand.length; i++)
+			{
+				this.deck.push(new Card(hand[i].rank, hand[i].suit));
+			}
+		}
+
 	}
 
 	/**************************** End of Deck class *******************************/
@@ -251,6 +258,7 @@ var BlackjackJS = (function() {
 			this.dealButton.disabled = true;
 			this.hitButton.disabled = false;
 			this.standButton.disabled = false;
+			this.valider();
 		}
 
 		/*
@@ -264,17 +272,123 @@ var BlackjackJS = (function() {
 			//render the card
 			document.getElementById(this.dealer.element).innerHTML += card.view();
 			}
-
-			if(this.dealer.getHandLength() == 5){
+			this.valider();
 			
+			
+			
+			
+		}
+	
+		/*
+			Stand button event handler
+		*/
+		this.standButtonHandler = function(){
+			this.hitButton.disabled = true;
+			this.standButton.disabled = true;
+
+			//deals a card to the dealer until
+			//one of the conditions below is true
+			while(true){
+				
+				if(this.dealer.getHandLength() < 5){
+					var card = Deck.deck.pop();
+					this.dealer.hit(card);
+					document.getElementById(this.dealer.element).innerHTML += card.view();
+				}
+				if(this.dealer.getHandLength() == 5){
+					this.gameEnded("défaite")
+					break
+				}
+				
+				
+				/*this.dealerScore.innerHTML = this.dealer.getScore();
+
+				var playerBlackjack = this.player.getScore() == 21,
+						dealerBlackjack = this.dealer.getScore() == 21;
+
+				//Rule set
+				if(dealerBlackjack && !playerBlackjack) {
+						this.gameEnded('You lost!');
+						break;
+				} else if(dealerBlackjack && playerBlackjack) {
+						this.gameEnded('Draw!');
+						break;
+				} else if(this.dealer.getScore() > 21 && this.player.getScore() <= 21) {
+						this.gameEnded('You won!');
+						break;
+				} else if(this.dealer.getScore() > this.player.getScore() && this.dealer.getScore() <= 21 && this.player.getScore() < 21) {
+						this.gameEnded('You lost!');
+						break;
+				}
+				//TODO needs to be expanded..
+					*/
+			}
+		}
+		/*
+			Initialise
+		*/
+		this.init = function(){
+			this.dealerScore = document.getElementById('dealer-score').getElementsByTagName("span")[0];
+			this.playerScore = document.getElementById('player-score').getElementsByTagName("span")[0];
+			this.dealButton = document.getElementById('deal');
+			this.hitButton = document.getElementById('hit');
+			this.standButton = document.getElementById('stand');
+
+			//attaching event handlers
+			this.dealButton.addEventListener('click', this.dealButtonHandler.bind(this));
+			this.hitButton.addEventListener('click', this.hitButtonHandler.bind(this));
+			this.standButton.addEventListener('click', this.standButtonHandler.bind(this));
+
+		}
+
+		/*
+			Start the game
+		*/
+		this.start = function(){
+
+			//initilaise and shuffle the deck of cards
+			Deck.init();
+			Deck.shuffle();
+
+			//deal one card to dealer
+			this.dealer = new Dealer('dealer', [Deck.deck.pop(),Deck.deck.pop(),Deck.deck.pop()]);
+
+			//deal two cards to player
+			this.player = new Player('player', [Deck.deck.pop(), Deck.deck.pop()]);
+			//donne les carte au bot
+			this.bot = new Player("bot",[Deck.deck.pop(), Deck.deck.pop()]);
+
+			//render the cards
+			document.getElementById(this.dealer.element).innerHTML = this.dealer.showHand();
+			document.getElementById(this.player.element).innerHTML = this.player.showHand();
+
+			//renders the current scores
+			this.setMessage("Hit or Stand");
+		}
+
+		/*
+			If the player wins or looses
+		*/
+		this.gameEnded = function(str){
+			this.setMessage(str);
+			this.dealButton.disabled = false;
+			this.hitButton.disabled = true;
+			this.standButton.disabled = true;
+
+		}
+
+		this.valider = function(){
 			playerHand = this.player.gethand()
 			dealerHand = this.dealer.gethand()
 			botHand = this.bot.gethand()
+			playerHand = {...dealerHand,...playerHand}
+			botHand = {...dealerHand,...botHand}
+			
 			var mainJoueur = Array();
-			var win
-
+			var win = 0
+			
 			for(var i = 0; i < Object.keys(playerHand).length; i++ )
-			{
+				{
 				if (playerHand[i].Rank ==12 )
 				{
 					mainJoueur.push("Q" + playerHand[i].suit.charAt(0));
@@ -327,7 +441,97 @@ var BlackjackJS = (function() {
 				{
 					mainJoueur.push(playerHand[i].Rank + playerHand[i].suit.charAt(0));
 				}
+				}
+			
+			for(t = 0; t < 999; t++)
+			{
+				this.mainStat = new Player("mainStat",[Deck.deck.pop(), Deck.deck.pop()]);
+				stathand = this.mainStat.gethand()
+				stathand = {...dealerHand,...stathand}
+				
+				
+				
+			var mainStatvalider = Array();
+			for(var i = 0; i < Object.keys(stathand).length; i++ )
+			{
+				if (stathand[i].Rank ==12 )
+				{
+					mainStatvalider.push("Q" + stathand[i].suit.charAt(0));
+				}
+				if (stathand[i].Rank ==11 )
+				{
+					mainStatvalider.push("J" + stathand[i].suit.charAt(0));
+				}
+				if (stathand[i].Rank ==13 )
+				{
+					mainStatvalider.push("K" + stathand[i].suit.charAt(0));
+				}
+				if (stathand[i].Rank == 14 )
+				{
+					mainStatvalider.push("A" + stathand[i].suit.charAt(0));
+				}
+				if (stathand[i].Rank ==10 )
+				{
+					mainStatvalider.push("T" + stathand[i].suit.charAt(0));
+				}
+				if (stathand[i].Rank ==9 )
+				{
+					mainStatvalider.push(stathand[i].Rank + stathand[i].suit.charAt(0));
+				}
+				if (stathand[i].Rank ==8 )
+				{
+					mainStatvalider.push(stathand[i].Rank + stathand[i].suit.charAt(0));
+				}
+				if (stathand[i].Rank ==7 )
+				{
+					mainStatvalider.push(stathand[i].Rank + stathand[i].suit.charAt(0));
+				}
+				if (stathand[i].Rank ==6 )
+				{
+					mainStatvalider.push(stathand[i].Rank + stathand[i].suit.charAt(0));
+				}
+				if (stathand[i].Rank ==5 )
+				{
+					mainStatvalider.push(stathand[i].Rank + stathand[i].suit.charAt(0));
+				}
+				if (stathand[i].Rank ==4 )
+				{
+					mainStatvalider.push(stathand[i].Rank + stathand[i].suit.charAt(0));
+				}
+				if (stathand[i].Rank ==3 )
+				{
+					mainStatvalider.push(stathand[i].Rank + stathand[i].suit.charAt(0));
+				}
+				if (stathand[i].Rank ==2 )
+				{
+					mainStatvalider.push(stathand[i].Rank + stathand[i].suit.charAt(0));
+				}
 			}
+				var MJ = Hand.solve(mainJoueur)
+				var MS = Hand.solve(mainStatvalider)
+				var winner = Hand.winners([MJ,MS])
+					if (winner.toString() == MJ.toString())
+					{
+						win ++
+					}
+					else
+					{
+						
+					}
+				Deck.ajouter(this.mainStat.hand)
+				Deck.shuffle();
+			}
+			win = win/10
+			document.getElementById('win-prob').innerHTML = win+" %";
+			if(win > 50)
+			{
+				document.getElementById('action-prob').innerHTML = "hit";
+			}
+			else
+			{
+				document.getElementById('action-prob').innerHTML = "stand";
+			}
+		
 			var mainBotvalider = Array();
 			for(var i = 0; i < Object.keys(botHand).length; i++ )
 			{
@@ -384,125 +588,23 @@ var BlackjackJS = (function() {
 					mainBotvalider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
 				}
 			}
+			
 			var MJ = Hand.solve(mainJoueur)
 			var MB = Hand.solve(mainBotvalider)
 			var winner = Hand.winners([MJ,MB])
-			if (winner.toString() == MJ.toString())
+			if(this.dealer.getHandLength() == 5)
+			{
+				if (winner.toString() == MJ.toString())
 			{
 				this.gameEnded("victoire")
-				win += 1 
 			}
 			else
 			{
 				this.gameEnded('défaite');
 			}
-		}
-	}
-		/*
-			Stand button event handler
-		*/
-		this.standButtonHandler = function(){
-			this.hitButton.disabled = true;
-			this.standButton.disabled = true;
-
-			//deals a card to the dealer until
-			//one of the conditions below is true
-			while(true){
-				
-				if(this.dealer.getHandLength() < 5){
-					var card = Deck.deck.pop();
-					this.dealer.hit(card);
-					document.getElementById(this.dealer.element).innerHTML += card.view();
-				}
-				if(this.dealer.getHandLength() == 5){
-					value2 =this.player.gethand()
-					value = this.dealer.gethand()
-					console.log(value);
-					console.log(value2);
-					this.gameEnded("terminer")
-					break
-				}
-				
-				
-				/*this.dealerScore.innerHTML = this.dealer.getScore();
-
-				var playerBlackjack = this.player.getScore() == 21,
-						dealerBlackjack = this.dealer.getScore() == 21;
-
-				//Rule set
-				if(dealerBlackjack && !playerBlackjack) {
-						this.gameEnded('You lost!');
-						break;
-				} else if(dealerBlackjack && playerBlackjack) {
-						this.gameEnded('Draw!');
-						break;
-				} else if(this.dealer.getScore() > 21 && this.player.getScore() <= 21) {
-						this.gameEnded('You won!');
-						break;
-				} else if(this.dealer.getScore() > this.player.getScore() && this.dealer.getScore() <= 21 && this.player.getScore() < 21) {
-						this.gameEnded('You lost!');
-						break;
-				}
-				//TODO needs to be expanded..
-					*/
 			}
 		}
-		/*
-			Initialise
-		*/
-		this.init = function(){
-			this.dealerScore = document.getElementById('dealer-score').getElementsByTagName("span")[0];
-			this.playerScore = document.getElementById('player-score').getElementsByTagName("span")[0];
-			this.dealButton = document.getElementById('deal');
-			this.hitButton = document.getElementById('hit');
-			this.standButton = document.getElementById('stand');
-
-			//attaching event handlers
-			this.dealButton.addEventListener('click', this.dealButtonHandler.bind(this));
-			this.hitButton.addEventListener('click', this.hitButtonHandler.bind(this));
-			this.standButton.addEventListener('click', this.standButtonHandler.bind(this));
-
-		}
-
-		/*
-			Start the game
-		*/
-		this.start = function(){
-
-			//initilaise and shuffle the deck of cards
-			Deck.init();
-			Deck.shuffle();
-
-			//deal one card to dealer
-			this.dealer = new Dealer('dealer', [Deck.deck.pop()],[Deck.deck.pop()],[Deck.deck.pop()]);
-
-			//deal two cards to player
-			this.player = new Player('player', [Deck.deck.pop(), Deck.deck.pop()]);
-			//donne les carte au bot
-			this.bot = new Player("bot",[Deck.deck.pop(), Deck.deck.pop()]);
-
-			//render the cards
-			document.getElementById(this.dealer.element).innerHTML = this.dealer.showHand();
-			document.getElementById(this.player.element).innerHTML = this.player.showHand();
-
-			//renders the current scores
-			this.dealerScore.innerHTML = this.dealer.getScore();
-			this.playerScore.innerHTML = this.player.getScore();
-
-			this.setMessage("Hit or Stand");
-		}
-
-		/*
-			If the player wins or looses
-		*/
-		this.gameEnded = function(str){
-			this.setMessage(str);
-			this.dealButton.disabled = false;
-			this.hitButton.disabled = true;
-			this.standButton.disabled = true;
-
-		}
-
+		
 		/*
 			Instructions or status of game
 		*/
