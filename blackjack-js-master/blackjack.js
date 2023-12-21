@@ -328,8 +328,6 @@ var BlackjackJS = (function() {
 			Initialise
 		*/
 		this.init = function(){
-			this.dealerScore = document.getElementById('dealer-score').getElementsByTagName("span")[0];
-			this.playerScore = document.getElementById('player-score').getElementsByTagName("span")[0];
 			this.dealButton = document.getElementById('deal');
 			this.hitButton = document.getElementById('hit');
 			this.standButton = document.getElementById('stand');
@@ -361,6 +359,7 @@ var BlackjackJS = (function() {
 			//render the cards
 			document.getElementById(this.dealer.element).innerHTML = this.dealer.showHand();
 			document.getElementById(this.player.element).innerHTML = this.player.showHand();
+			document.getElementById(this.bot.element).innerHTML = "";
 
 			//renders the current scores
 			this.setMessage("Hit or Stand");
@@ -597,10 +596,12 @@ var BlackjackJS = (function() {
 				if (winner.toString() == MJ.toString())
 			{
 				this.gameEnded("victoire")
+				document.getElementById(this.bot.element).innerHTML = this.bot.showHand();
 			}
 			else
 			{
 				this.gameEnded('défaite');
+				document.getElementById(this.bot.element).innerHTML = this.bot.showHand();
 			}
 			}
 		}
