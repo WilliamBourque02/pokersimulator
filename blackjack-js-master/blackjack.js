@@ -10,13 +10,6 @@
 //namespacing
 var BlackjackJS = (function() {
 
-		var hand1 = Hand.solve(['Ad', 'As']);
-		var hand3 = Hand.solve(['2d', 'Tc']);
-		var winner = Hand.winners([hand1,hand3]);
-		winner = winner.toString();
-		hand1 = hand1.toString();
-		console.log(winner);
-		console.log(hand1);
 	/**************
 		Card class
 	***************/
@@ -102,7 +95,7 @@ var BlackjackJS = (function() {
 		this.hand = hand;
 		this.element = element;
 	}
-	Player.prototype.gethand = function(){
+	Player.prototype.getHand = function(){
 		dictionary = {};
 		for(var i = 0; i< this.hand.length; i++){
 			dictionary[i]= {Rank: this.hand[i].getValue(i), suit: this.hand[i].getSuit(i) }
@@ -179,7 +172,7 @@ var BlackjackJS = (function() {
 		return value;
 	}
 
-	Dealer.prototype.gethand = function(){
+	Dealer.prototype.getHand = function(){
 		dictionary = {};
 		for(var i = 0; i< this.hand.length; i++){
 			dictionary[2+i]= {Rank: this.hand[i].getValue(i), suit: this.hand[i].getSuit(i) }
@@ -300,28 +293,6 @@ var BlackjackJS = (function() {
 					break
 				}
 				
-				
-				/*this.dealerScore.innerHTML = this.dealer.getScore();
-
-				var playerBlackjack = this.player.getScore() == 21,
-						dealerBlackjack = this.dealer.getScore() == 21;
-
-				//Rule set
-				if(dealerBlackjack && !playerBlackjack) {
-						this.gameEnded('You lost!');
-						break;
-				} else if(dealerBlackjack && playerBlackjack) {
-						this.gameEnded('Draw!');
-						break;
-				} else if(this.dealer.getScore() > 21 && this.player.getScore() <= 21) {
-						this.gameEnded('You won!');
-						break;
-				} else if(this.dealer.getScore() > this.player.getScore() && this.dealer.getScore() <= 21 && this.player.getScore() < 21) {
-						this.gameEnded('You lost!');
-						break;
-				}
-				//TODO needs to be expanded..
-					*/
 			}
 		}
 		/*
@@ -377,9 +348,9 @@ var BlackjackJS = (function() {
 		}
 
 		this.valider = function(){
-			playerHand = this.player.gethand()
-			dealerHand = this.dealer.gethand()
-			botHand = this.bot.gethand()
+			playerHand = this.player.getHand()
+			dealerHand = this.dealer.getHand()
+			botHand = this.bot.getHand()
 			playerHand = {...dealerHand,...playerHand}
 			botHand = {...dealerHand,...botHand}
 			
@@ -445,69 +416,69 @@ var BlackjackJS = (function() {
 			for(t = 0; t < 999; t++)
 			{
 				this.mainStat = new Player("mainStat",[Deck.deck.pop(), Deck.deck.pop()]);
-				stathand = this.mainStat.gethand()
-				stathand = {...dealerHand,...stathand}
+				statHand = this.mainStat.getHand()
+				statHand = {...dealerHand,...statHand}
 				
 				
 				
-			var mainStatvalider = Array();
-			for(var i = 0; i < Object.keys(stathand).length; i++ )
+			var mainStatValider = Array();
+			for(var i = 0; i < Object.keys(statHand).length; i++ )
 			{
-				if (stathand[i].Rank ==12 )
+				if (statHand[i].Rank ==12 )
 				{
-					mainStatvalider.push("Q" + stathand[i].suit.charAt(0));
+					mainStatValider.push("Q" + statHand[i].suit.charAt(0));
 				}
-				if (stathand[i].Rank ==11 )
+				if (statHand[i].Rank ==11 )
 				{
-					mainStatvalider.push("J" + stathand[i].suit.charAt(0));
+					mainStatValider.push("J" + statHand[i].suit.charAt(0));
 				}
-				if (stathand[i].Rank ==13 )
+				if (statHand[i].Rank ==13 )
 				{
-					mainStatvalider.push("K" + stathand[i].suit.charAt(0));
+					mainStatValider.push("K" + statHand[i].suit.charAt(0));
 				}
-				if (stathand[i].Rank == 14 )
+				if (statHand[i].Rank == 14 )
 				{
-					mainStatvalider.push("A" + stathand[i].suit.charAt(0));
+					mainStatValider.push("A" + statHand[i].suit.charAt(0));
 				}
-				if (stathand[i].Rank ==10 )
+				if (statHand[i].Rank ==10 )
 				{
-					mainStatvalider.push("T" + stathand[i].suit.charAt(0));
+					mainStatValider.push("T" + statHand[i].suit.charAt(0));
 				}
-				if (stathand[i].Rank ==9 )
+				if (statHand[i].Rank ==9 )
 				{
-					mainStatvalider.push(stathand[i].Rank + stathand[i].suit.charAt(0));
+					mainStatValider.push(statHand[i].Rank + statHand[i].suit.charAt(0));
 				}
-				if (stathand[i].Rank ==8 )
+				if (statHand[i].Rank ==8 )
 				{
-					mainStatvalider.push(stathand[i].Rank + stathand[i].suit.charAt(0));
+					mainStatValider.push(statHand[i].Rank + statHand[i].suit.charAt(0));
 				}
-				if (stathand[i].Rank ==7 )
+				if (statHand[i].Rank ==7 )
 				{
-					mainStatvalider.push(stathand[i].Rank + stathand[i].suit.charAt(0));
+					mainStatValider.push(statHand[i].Rank + statHand[i].suit.charAt(0));
 				}
-				if (stathand[i].Rank ==6 )
+				if (statHand[i].Rank ==6 )
 				{
-					mainStatvalider.push(stathand[i].Rank + stathand[i].suit.charAt(0));
+					mainStatValider.push(statHand[i].Rank + statHand[i].suit.charAt(0));
 				}
-				if (stathand[i].Rank ==5 )
+				if (statHand[i].Rank ==5 )
 				{
-					mainStatvalider.push(stathand[i].Rank + stathand[i].suit.charAt(0));
+					mainStatValider.push(statHand[i].Rank + statHand[i].suit.charAt(0));
 				}
-				if (stathand[i].Rank ==4 )
+				if (statHand[i].Rank ==4 )
 				{
-					mainStatvalider.push(stathand[i].Rank + stathand[i].suit.charAt(0));
+					mainStatValider.push(statHand[i].Rank + statHand[i].suit.charAt(0));
 				}
-				if (stathand[i].Rank ==3 )
+				if (statHand[i].Rank ==3 )
 				{
-					mainStatvalider.push(stathand[i].Rank + stathand[i].suit.charAt(0));
+					mainStatValider.push(statHand[i].Rank + statHand[i].suit.charAt(0));
 				}
-				if (stathand[i].Rank ==2 )
+				if (statHand[i].Rank ==2 )
 				{
-					mainStatvalider.push(stathand[i].Rank + stathand[i].suit.charAt(0));
+					mainStatValider.push(statHand[i].Rank + statHand[i].suit.charAt(0));
 				}
 			}
 				var MJ = Hand.solve(mainJoueur)
-				var MS = Hand.solve(mainStatvalider)
+				var MS = Hand.solve(mainStatValider)
 				var winner = Hand.winners([MJ,MS])
 					if (winner.toString() == MJ.toString())
 					{
@@ -531,65 +502,65 @@ var BlackjackJS = (function() {
 				document.getElementById('action-prob').innerHTML = "stand";
 			}
 		
-			var mainBotvalider = Array();
+			var mainBotValider = Array();
 			for(var i = 0; i < Object.keys(botHand).length; i++ )
 			{
 				if (botHand[i].Rank ==12 )
 				{
-					mainBotvalider.push("Q" + botHand[i].suit.charAt(0));
+					mainBotValider.push("Q" + botHand[i].suit.charAt(0));
 				}
 				if (botHand[i].Rank ==11 )
 				{
-					mainBotvalider.push("J" + botHand[i].suit.charAt(0));
+					mainBotValider.push("J" + botHand[i].suit.charAt(0));
 				}
 				if (botHand[i].Rank ==13 )
 				{
-					mainBotvalider.push("K" + botHand[i].suit.charAt(0));
+					mainBotValider.push("K" + botHand[i].suit.charAt(0));
 				}
 				if (botHand[i].Rank == 14 )
 				{
-					mainBotvalider.push("A" + botHand[i].suit.charAt(0));
+					mainBotValider.push("A" + botHand[i].suit.charAt(0));
 				}
 				if (botHand[i].Rank ==10 )
 				{
-					mainBotvalider.push("T" + botHand[i].suit.charAt(0));
+					mainBotValider.push("T" + botHand[i].suit.charAt(0));
 				}
 				if (botHand[i].Rank ==9 )
 				{
-					mainBotvalider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
+					mainBotValider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
 				}
 				if (botHand[i].Rank ==8 )
 				{
-					mainBotvalider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
+					mainBotValider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
 				}
 				if (botHand[i].Rank ==7 )
 				{
-					mainBotvalider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
+					mainBotValider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
 				}
 				if (botHand[i].Rank ==6 )
 				{
-					mainBotvalider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
+					mainBotValider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
 				}
 				if (botHand[i].Rank ==5 )
 				{
-					mainBotvalider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
+					mainBotValider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
 				}
 				if (botHand[i].Rank ==4 )
 				{
-					mainBotvalider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
+					mainBotValider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
 				}
 				if (botHand[i].Rank ==3 )
 				{
-					mainBotvalider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
+					mainBotValider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
 				}
 				if (botHand[i].Rank ==2 )
 				{
-					mainBotvalider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
+					mainBotValider.push(botHand[i].Rank + botHand[i].suit.charAt(0));
 				}
 			}
 			
 			var MJ = Hand.solve(mainJoueur)
-			var MB = Hand.solve(mainBotvalider)
+			var MB = Hand.solve(mainBotValider)
 			var winner = Hand.winners([MJ,MB])
 			if(this.dealer.getHandLength() == 5)
 			{
